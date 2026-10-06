@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7f7f5">
+  <meta name="description" content="StudyOS V2 — a private Grade 10 CBSE study hub.">
+  <title>StudyOS V2</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="gate" class="gate">
+    <div class="gate-card">
+      <div class="brand-mark">S</div>
+      <p class="eyebrow">PRIVATE STUDY HUB</p>
+      <h1>StudyOS</h1>
+      <p class="muted">Grade 10 CBSE · built for focused revision.</p>
+      <form id="gateForm">
+        <label for="accessCode">Access code</label>
+        <div class="code-row">
+          <input id="accessCode" type="password" autocomplete="off" placeholder="Enter code">
+          <button class="primary" type="submit">Enter</button>
+        </div>
+        <p id="gateError" class="error" aria-live="polite"></p>
+      </form>
+      <p class="tiny">Private/friends-only interface. The access gate is client-side and is not real security.</p>
+    </div>
+  </div>
+
+  <div id="app" class="hidden">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <button class="brand-button" id="homeBtn" aria-label="Go to overview">
+          <span class="brand-dot">S</span>
+          <span><strong>StudyOS</strong><small>Grade 10 CBSE</small></span>
+        </button>
+        <nav class="top-actions">
+          <button class="icon-button" id="themeBtn" title="Toggle theme">☼</button>
+          <button class="ghost-button" id="lockBtn">Lock</button>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero shell">
+        <div>
+          <p class="eyebrow">GRADE 10 · CBSE · NCERT</p>
+          <h1>Learn less chaotically.<br><span>Remember more.</span></h1>
+          <p class="hero-copy">One calm place for chapters, quick revision, formulas, important questions and your progress.</p>
+          <div class="hero-actions">
+            <button class="primary" id="revisionBtn">Start revision</button>
+            <button class="secondary" id="randomBtn">Surprise me</button>
+          </div>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-card"><strong id="statChapters">70</strong><span>chapters / units</span></div>
+          <div class="stat-card"><strong id="statDone">0%</strong><span>revision complete</span></div>
+          <div class="stat-card"><strong id="statSaved">0</strong><span>saved items</span></div>
+        </div>
+      </section>
+
+      <section class="shell">
+        <div class="tabs" id="subjectTabs">
+          <button class="tab active" data-subject="Overview">Overview</button>
+          <button class="tab" data-subject="Mathematics">Mathematics</button>
+          <button class="tab" data-subject="Science">Science</button>
+          <button class="tab" data-subject="Social Science">Social Science</button>
+          <button class="tab" data-subject="English">English</button>
+        </div>
+
+        <div class="toolbar">
+          <div class="search-wrap">
+            <span>⌕</span>
+            <input id="searchInput" placeholder="Search chapters, topics or tags…">
+            <kbd>Ctrl K</kbd>
+          </div>
+          <button class="secondary" id="savedOnlyBtn">☆ Saved</button>
+          <button class="secondary" id="filterBtn">Filters</button>
+        </div>
+
+        <div id="filterPanel" class="filter-panel hidden">
+          <button class="filter active" data-filter="all">All</button>
+          <button class="filter" data-filter="unrevised">Needs revision</button>
+          <button class="filter" data-filter="revised">Revised</button>
+          <button class="filter" data-filter="important">Important</button>
+        </div>
+
+        <div id="overview" class="view">
+          <div class="section-head">
+            <div><p class="eyebrow">YOUR DASHBOARD</p><h2>Keep moving.</h2></div>
+            <button class="text-button" id="resetBtn">Reset progress</button>
+          </div>
+          <div class="dashboard-grid">
+            <article class="focus-card">
+              <div class="focus-top"><span class="pill">TODAY'S FOCUS</span><span id="focusSubject">Mathematics</span></div>
+              <h3 id="focusTitle">Triangles</h3>
+              <p id="focusText">Similarity criteria, proportional sides and the core theorem set.</p>
+              <button class="primary small" id="focusOpen">Open chapter</button>
+            </article>
+            <article class="progress-card">
+              <div class="card-heading"><span>Revision progress</span><strong id="progressLabel">0%</strong></div>
+              <div class="progress-track"><div id="progressBar"></div></div>
+              <p class="muted">Mark chapters as revised as you finish them.</p>
+              <div class="mini-stats"><span><b id="revisedCount">0</b> revised</span><span><b id="remainingCount">70</b> remaining</span></div>
+            </article>
+          </div>
+          <div class="section-head compact"><div><p class="eyebrow">QUICK ACCESS</p><h2>High-value revision</h2></div></div>
+          <div id="quickGrid" class="card-grid"></div>
+        </div>
+
+        <div id="library" class="view hidden">
+          <div class="section-head">
+            <div><p class="eyebrow" id="libraryEyebrow">LIBRARY</p><h2 id="libraryTitle">Mathematics</h2></div>
+            <span class="muted" id="resultCount"></span>
+          </div>
+          <div id="chapterGrid" class="card-grid"></div>
+          <div id="emptyState" class="empty hidden">No chapters match your current search/filter.</div>
+        </div>
+      </section>
+    </main>
+
+    <div id="modal" class="modal hidden" role="dialog" aria-modal="true">
+      <div class="modal-backdrop" id="modalClose"></div>
+      <article class="modal-card">
+        <div class="modal-head">
+          <div><span id="modalSubject" class="pill"></span><p id="modalUnit" class="eyebrow"></p></div>
+          <button class="icon-button" id="modalX">×</button>
+        </div>
+        <h2 id="modalTitle"></h2>
+        <p id="modalDescription" class="modal-description"></p>
+        <div class="modal-columns">
+          <section><p class="eyebrow">CORE POINTS</p><ul id="modalPoints"></ul></section>
+          <section><p class="eyebrow">EXAM METHOD</p><div id="modalMethod" class="method-box"></div></section>
+        </div>
+        <div class="modal-footer">
+          <button class="secondary" id="modalPrev">← Previous</button>
+          <div class="modal-main-actions">
+            <button class="secondary" id="bookmarkBtn">☆ Save</button>
+            <button class="primary" id="doneBtn">Mark revised</button>
+          </div>
+          <button class="secondary" id="modalNext">Next →</button>
+        </div>
+      </article>
+    </div>
+
+    <footer class="shell footer">
+      <strong>StudyOS V2</strong>
+      <span>Made for focused Grade 10 revision.</span>
+      <button class="text-button" id="footerLock">Lock hub</button>
+    </footer>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
